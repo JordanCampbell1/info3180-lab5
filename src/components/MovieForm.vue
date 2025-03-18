@@ -19,7 +19,9 @@
 
       <div class="form-group mb-3">
         <label for="description" class="form-label">Description</label>
-        <input type="text" name="description" class="form-control" />
+        <textarea name="description" class="form-control" rows="4"></textarea>
+
+        <!-- <input type="text" name="description" class="form-control" /> -->
       </div>
 
       <div class="form-group mb-3">
@@ -113,5 +115,9 @@ const saveMovie = () => {
 .alert-danger {
   background-color: #f8d7da;
   color: #721c24;
+}
+
+textarea{
+  resize: none;
 }
 </style>

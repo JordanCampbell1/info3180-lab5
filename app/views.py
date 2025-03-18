@@ -16,6 +16,7 @@ from app.models import Movie
 from werkzeug.utils import secure_filename
 from datetime import datetime, timezone
 
+from flask_wtf.csrf import generate_csrf 
 
 
 ###
@@ -33,6 +34,9 @@ def movies():
     if request.method == "POST":
         
         form = MovieForm()
+        print("this is title: ", form.title.data)
+        print("this is desc: ", form.description.data)
+        print("this is poster: ", form.poster.data)
         
         if form.validate_on_submit():
             title = form.title.data
@@ -61,10 +65,9 @@ def movies():
         
         return form_errors(form)
          
-    
-            
-            
-            
+@app.route('/api/v1/csrf-token', methods=['GET']) 
+def get_csrf(): 
+    return jsonify({'csrf_token': generate_csrf()})             
             
         
     

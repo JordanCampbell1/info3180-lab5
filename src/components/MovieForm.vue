@@ -1,4 +1,14 @@
 <template>
+  <!-- Success Message -->
+  <div v-if="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div v-if="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+
   <div class="container mt-5">
     <h2>Upload Movie</h2>
     <form @submit.prevent="saveMovie" id="movieForm">
@@ -27,11 +37,15 @@ import { onMounted, ref } from 'vue';
 
 
 let csrf_token = ref("");
+let successMessage = ref("");  // For success feedback
+let errorMessage = ref("");    // For error feedback
 
 const getCsrfToken = () => {
   fetch('/api/v1/csrf-token')
     .then((response) => response.json())
     .then((data) => {
+
+
       console.log(data);
       csrf_token.value = data.csrf_token;
     })
@@ -66,11 +80,17 @@ const saveMovie = () => {
     .then(function (data) {
       // display a success message 
       console.log(data);
-      alert(`Success: ${data.message}`)
+      // alert(`Success: ${data.message}`)
+      // On success, display the success message
+      successMessage.value = `Success: ${data.message}`;
+      errorMessage.value = "";  // Clear any previous error message
     })
     .catch(function (error) {
       console.log(error);
-      alert("Error: ", error)
+      // alert("Error: ", error)
+      // On error, display the error message
+      successMessage.value = "";  // Clear any previous success message
+      errorMessage.value = `Error: ${error.message || 'An unexpected error occurred'}`;
     });
 } 
 </script>
@@ -79,5 +99,19 @@ const saveMovie = () => {
 .container {
   max-width: 500px;
   margin-top: 50px;
+}
+
+.alert {
+  font-weight: bold;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 </style>

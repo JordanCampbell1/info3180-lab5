@@ -6,7 +6,9 @@
 
   <!-- Error Message -->
   <div v-if="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
+    <ul>
+      <li v-for="error in errorMessage" :key="error">{{ error }}</li>
+    </ul>
   </div>
 
   <div class="container mt-5">
@@ -84,8 +86,15 @@ const saveMovie = () => {
       console.log(data);
       // alert(`Success: ${data.message}`)
       // On success, display the success message
-      successMessage.value = `Success: ${data.message}`;
-      errorMessage.value = "";  // Clear any previous error message
+      if (data.message) {
+        successMessage.value = `Success: ${data.message}`;
+        errorMessage.value = "";  // Clear any previous error message
+      }
+      else {
+        successMessage.value = "";
+        errorMessage.value = data;  // Clear any previous error message
+      }
+
     })
     .catch(function (error) {
       console.log(error);
@@ -117,7 +126,7 @@ const saveMovie = () => {
   color: #721c24;
 }
 
-textarea{
+textarea {
   resize: none;
 }
 </style>
